@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CrudApp.Data;
 using CrudApp.Models;
+using CrudApp.Contracts;
 
 namespace CrudApp.Controllers
 {
     public class ThingsController : Controller
     {
-        private readonly CrudAppContext _context;
+        private readonly IThingsRepository _thingsRepository;
 
-        public ThingsController(CrudAppContext context)
+
+        public ThingsController(IThingsRepository thingsRepository)
         {
-            _context = context;
+            _thingsRepository = thingsRepository;
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Thing.ToListAsync());
+            return View(await _thingsRepository.GetAllAsync());
         }
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -29,8 +25,8 @@ namespace CrudApp.Controllers
                 return NotFound();
             }
 
-            var thing = await _context.Thing
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var thing = await _thingsRepository.GetByIdAsync(id.Value);
+
             if (thing == null)
             {
                 return NotFound();
@@ -43,7 +39,7 @@ namespace CrudApp.Controllers
         {
             return View();
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description")] Thing thing)
@@ -51,8 +47,7 @@ namespace CrudApp.Controllers
             if (ModelState.IsValid)
             {
                 thing.Id = Guid.NewGuid();
-                _context.Add(thing);
-                await _context.SaveChangesAsync();
+                await _thingsRepository.AddAsync(thing);
                 return RedirectToAction(nameof(Index));
             }
             return View(thing);
@@ -65,7 +60,7 @@ namespace CrudApp.Controllers
                 return NotFound();
             }
 
-            var thing = await _context.Thing.FindAsync(id);
+            var thing = await _thingsRepository.GetByIdAsync(id.Value);
             if (thing == null)
             {
                 return NotFound();
@@ -86,12 +81,11 @@ namespace CrudApp.Controllers
             {
                 try
                 {
-                    _context.Update(thing);
-                    await _context.SaveChangesAsync();
+                    await _thingsRepository.UpdateAsync(thing);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ThingExists(thing.Id))
+                    if (!await _thingsRepository.ExistsAsync(thing.Id))
                     {
                         return NotFound();
                     }
@@ -111,8 +105,7 @@ namespace CrudApp.Controllers
                 return NotFound();
             }
 
-            var thing = await _context.Thing
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var thing = await _thingsRepository.GetByIdAsync(id.Value);
             if (thing == null)
             {
                 return NotFound();
@@ -125,19 +118,8 @@ namespace CrudApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var thing = await _context.Thing.FindAsync(id);
-            if (thing != null)
-            {
-                _context.Thing.Remove(thing);
-            }
-
-            await _context.SaveChangesAsync();
+            await _thingsRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ThingExists(Guid id)
-        {
-            return _context.Thing.Any(e => e.Id == id);
         }
     }
 }

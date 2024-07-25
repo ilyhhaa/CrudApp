@@ -1,7 +1,6 @@
 ﻿using CrudApp.Contracts;
 using CrudApp.Data;
 using CrudApp.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CrudApp.Repositories
@@ -19,9 +18,9 @@ namespace CrudApp.Repositories
             return await _context.Thing.ToListAsync();
         }
 
-        public Task<Thing> GetByIdAsync(Guid id)
+        public async Task<Thing> GetByIdAsync(Guid id)
         {
-            return _context.Thing.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Thing.FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task AddAsync(Thing thing)
         {
