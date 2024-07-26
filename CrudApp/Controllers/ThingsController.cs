@@ -29,12 +29,15 @@ namespace CrudApp.Controllers
             {
                 return View(await _thingsRepository.GetAllAsync());
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException InvalidOpEx)
             {
-
-                return Problem(detail:ex.Message);
+                return Problem(detail: InvalidOpEx.Message);
             }
-            
+            catch (Exception ex)
+            {
+                return Problem(detail: "An unexpected error occurred. Please try again later.");
+            }
+
         }
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -42,15 +45,29 @@ namespace CrudApp.Controllers
             {
                 return NotFound();
             }
-
-            var thing = await _thingsRepository.GetByIdAsync(id.Value);
-
-            if (thing == null)
+            try
             {
-                return NotFound();
+                var thing = await _thingsRepository.GetByIdAsync(id.Value);
+
+                if (thing == null)
+                {
+                    return NotFound();
+                }
+                return View(thing);
+            }
+            catch (ArgumentException ArgumentEx)
+            {
+                return BadRequest(ArgumentEx.Message);
+            }
+            catch (InvalidOperationException InvalidOpEx)
+            {
+                return Problem(detail: InvalidOpEx.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "An unexpected error occurred. Please try again later.");
             }
 
-            return View(thing);
         }
 
         public IActionResult Create()

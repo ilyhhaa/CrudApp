@@ -17,13 +17,36 @@ namespace CrudApp.Repositories
         public async Task<IEnumerable<Thing>> GetAllAsync()
         {
             if (_context == null) throw new ArgumentNullException("Entity set 'ApplicationDbContext.Thing' is null.");
-            
+
             return await _context.Thing.ToListAsync();
         }
 
         public async Task<Thing> GetByIdAsync(Guid id)
         {
-            return await _context.Thing.FirstOrDefaultAsync(x => x.Id == id);
+            if (_context.Thing == null)
+            {
+                throw new InvalidOperationException("Entity set 'ApplicationDbContext.Thing' is null.");
+            };
+
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid ID value");
+            }
+
+            try
+            {
+                return await _context.Thing.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            catch (DbUpdateException DbUpdateEx)
+            {
+
+                throw new Exception("An error occurred while accessing the database");
+            }
+            catch (InvalidOperationException InvalidOpEx)
+            {
+                throw new Exception("An error occurred while accessing the database");
+            }
+
         }
         public async Task AddAsync(Thing thing)
         {
@@ -37,9 +60,9 @@ namespace CrudApp.Repositories
         }
         public async Task DeleteAsync(Guid id)
         {
-           var thing = await _context.Thing.FindAsync(id);
+            var thing = await _context.Thing.FindAsync(id);
 
-            if (thing!=null)
+            if (thing != null)
             {
                 _context.Thing.Remove(thing);
                 await _context.SaveChangesAsync();
@@ -50,7 +73,7 @@ namespace CrudApp.Repositories
         {
             return await _context.Thing.AnyAsync(e => e.Id == id);
         }
-       
+
     }
 
 
