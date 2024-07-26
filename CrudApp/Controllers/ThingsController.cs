@@ -14,6 +14,11 @@ namespace CrudApp.Controllers
         {
             _thingsRepository = thingsRepository;
         }
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Index()
         {
             return View(await _thingsRepository.GetAllAsync());
@@ -121,5 +126,8 @@ namespace CrudApp.Controllers
             await _thingsRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        
+
     }
 }
