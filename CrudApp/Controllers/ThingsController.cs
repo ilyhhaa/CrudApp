@@ -18,6 +18,10 @@ namespace CrudApp.Controllers
         {
             return View();
         }
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> Index()
         {
@@ -127,7 +131,7 @@ namespace CrudApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
 
     }
 }
