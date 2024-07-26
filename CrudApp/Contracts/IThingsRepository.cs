@@ -1,5 +1,5 @@
 ﻿using CrudApp.Models;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace CrudApp.Contracts
 {

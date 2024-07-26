@@ -9,7 +9,6 @@ namespace CrudApp.Controllers
     {
         private readonly IThingsRepository _thingsRepository;
 
-
         public ThingsController(IThingsRepository thingsRepository)
         {
             _thingsRepository = thingsRepository;
@@ -69,7 +68,6 @@ namespace CrudApp.Controllers
             }
 
         }
-
         public IActionResult Create()
         {
             return View();

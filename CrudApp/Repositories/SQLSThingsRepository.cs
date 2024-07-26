@@ -2,7 +2,6 @@
 using CrudApp.Data;
 using CrudApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
 
 namespace CrudApp.Repositories
 {
@@ -75,9 +74,5 @@ namespace CrudApp.Repositories
         }
 
     }
-
-
-
-
 }
 
