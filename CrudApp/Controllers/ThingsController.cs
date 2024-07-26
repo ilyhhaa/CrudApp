@@ -25,7 +25,16 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _thingsRepository.GetAllAsync());
+            try
+            {
+                return View(await _thingsRepository.GetAllAsync());
+            }
+            catch (InvalidOperationException ex)
+            {
+
+                return Problem(detail:ex.Message);
+            }
+            
         }
         public async Task<IActionResult> Details(Guid? id)
         {

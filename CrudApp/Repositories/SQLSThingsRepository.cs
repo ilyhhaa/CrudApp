@@ -2,6 +2,7 @@
 using CrudApp.Data;
 using CrudApp.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 
 namespace CrudApp.Repositories
 {
@@ -11,10 +12,12 @@ namespace CrudApp.Repositories
 
         public SQLSThingsRepository(CrudAppContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
         public async Task<IEnumerable<Thing>> GetAllAsync()
         {
+            if (_context == null) throw new ArgumentNullException("Entity set 'ApplicationDbContext.Thing' is null.");
+            
             return await _context.Thing.ToListAsync();
         }
 
