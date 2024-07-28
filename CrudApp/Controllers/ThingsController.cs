@@ -108,7 +108,7 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
+            if (id == null) 
             {
                 return NotFound();
             }
@@ -120,14 +120,14 @@ namespace CrudApp.Controllers
             }
             return View(thing);
         }
-
+            
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Description")] Thing thing)
         {
             if (id != thing.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             if (ModelState.IsValid)
@@ -135,19 +135,23 @@ namespace CrudApp.Controllers
                 try
                 {
                     await _thingsRepository.UpdateAsync(thing);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (ArgumentNullException ArgNullEx)
                 {
-                    if (!await _thingsRepository.ExistsAsync(thing.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    
+                    ModelState.AddModelError(string.Empty, "The thing cannot be null.");
                 }
-                return RedirectToAction(nameof(Index));
+                catch (InvalidOperationException InvalidOpEx)
+                {
+                    
+                    ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    
+                    ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
+                }
             }
             return View(thing);
         }
