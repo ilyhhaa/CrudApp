@@ -39,18 +39,45 @@ namespace CrudApp.Repositories
             catch (DbUpdateException DbUpdateEx)
             {
 
-                throw new Exception("An error occurred while accessing the database");
+                throw new Exception("An error occurred while accessing the database",DbUpdateEx);
             }
             catch (InvalidOperationException InvalidOpEx)
             {
-                throw new Exception("An error occurred while accessing the database");
+                throw new Exception("An error occurred while accessing the database",InvalidOpEx);
             }
 
         }
         public async Task AddAsync(Thing thing)
         {
-            await _context.Thing.AddAsync(thing);
-            await _context.SaveChangesAsync();
+            if (thing == null)
+            {
+                throw new ArgumentNullException(nameof(thing));
+            }
+
+            if (string.IsNullOrEmpty(thing.Title))
+            {
+                throw new ArgumentException("Name is required", nameof(thing.Title));
+            }
+
+            var existingThing = await _context.Thing.FirstOrDefaultAsync(t => t.Title == thing.Title);
+            if (existingThing != null)
+            {
+                throw new InvalidOperationException($"A thing with the name {thing.Title} already exists.");
+            }
+
+            try
+            {
+                await _context.Thing.AddAsync(thing);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException DbUpdConcurrencyEx)
+            {
+                throw new InvalidOperationException("Concurrency conflict occurred while saving the thing.");
+            }
+            catch (DbUpdateException DbUpdateEx)
+            {
+                throw new InvalidOperationException("An error occurred while saving the thing.");
+            }
         }
         public async Task UpdateAsync(Thing thing)
         {
