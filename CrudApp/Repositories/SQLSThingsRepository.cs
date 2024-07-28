@@ -105,16 +105,29 @@ namespace CrudApp.Repositories
             catch (DbUpdateException DbUpdateEx)
             {
                 throw new InvalidOperationException("An error occurred while updating the thing.", DbUpdateEx);
-            } 
+            }
         }
         public async Task DeleteAsync(Guid id)
         {
             var thing = await _context.Thing.FindAsync(id);
 
-            if (thing != null)
+            if (thing == null)
+            {
+                throw new InvalidOperationException($"Thing with ID {id} does not exist.");
+            }
+
+            try
             {
                 _context.Thing.Remove(thing);
                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException DbUpdConcurrencyEx)
+            {
+                throw new InvalidOperationException("Concurrency conflict occurred while deleting the thing.", DbUpdConcurrencyEx);
+            }
+            catch (DbUpdateException DbUpdEx)
+            {
+                throw new InvalidOperationException("An error occurred while deleting the thing.", DbUpdEx);
             }
         }
 
@@ -122,7 +135,5 @@ namespace CrudApp.Repositories
         {
             return await _context.Thing.AnyAsync(e => e.Id == id);
         }
-
     }
 }
-

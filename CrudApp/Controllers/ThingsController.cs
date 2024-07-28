@@ -159,24 +159,46 @@ namespace CrudApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                ModelState.AddModelError(string.Empty, "The ID cannot be null.");
+                return View("Error");
             }
 
-            var thing = await _thingsRepository.GetByIdAsync(id.Value);
-            if (thing == null)
+            try
             {
-                return NotFound();
-            }
+                var thing = await _thingsRepository.GetByIdAsync(id.Value);
+                if (thing == null)
+                {
+                    return NotFound();
+                }
 
-            return View(thing);
+                return View(thing);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
+                return View("Error");
+            }
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _thingsRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _thingsRepository.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
+                return View("Error");
+            }
         }
 
 
