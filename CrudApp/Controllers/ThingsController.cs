@@ -187,11 +187,11 @@ namespace CrudApp.Controllers
             try
             {
                 await _thingsRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); 
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException InvalidOpEx)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
                 return View("Error");
             }
             catch (Exception ex)
