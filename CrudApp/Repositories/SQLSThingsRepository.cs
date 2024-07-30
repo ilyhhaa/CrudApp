@@ -59,6 +59,7 @@ namespace CrudApp.Repositories
                 .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()))
                 .ToListAsync();
         }
+
         public async Task AddAsync(Thing thing)
         {
             if (thing == null)

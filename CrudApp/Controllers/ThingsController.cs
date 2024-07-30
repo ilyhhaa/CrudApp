@@ -22,11 +22,21 @@ namespace CrudApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             try
             {
-                return View(await _thingsRepository.GetAllAsync());
+                IEnumerable<Thing> things;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    things = await _thingsRepository.SearchAsync(searchString);
+                }
+                else
+                {
+                    things = await _thingsRepository.GetAllAsync();
+                }
+
+                return View(things);
             }
             catch (InvalidOperationException InvalidOpEx)
             {
