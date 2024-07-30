@@ -26,15 +26,8 @@ namespace CrudApp.Controllers
         {
             try
             {
-                IEnumerable<Thing> things;
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    things = await _thingsRepository.SearchAsync(searchString);
-                }
-                else
-                {
-                    things = await _thingsRepository.GetAllAsync();
-                }
+                var things = string.IsNullOrEmpty(searchString) ? await _thingsRepository.GetAllAsync()
+                    : await _thingsRepository.SearchAsync(searchString);
 
                 return View(things);
             }
