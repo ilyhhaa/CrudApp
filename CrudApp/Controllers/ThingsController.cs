@@ -41,7 +41,7 @@ namespace CrudApp.Controllers
             {
                 return Problem(detail: "An unexpected error occurred. Please try again later.");
             }
-
+            //Add search not only by name, but also by description
         }
         public async Task<IActionResult> Details(Guid? id)
         {
