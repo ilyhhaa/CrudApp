@@ -28,7 +28,9 @@ namespace CrudApp.Controllers
             {
                 var things = string.IsNullOrEmpty(searchString) ? await _thingsRepository.GetAllAsync()
                     : await _thingsRepository.SearchAsync(searchString);
-
+                
+                ViewData["CurrentSearch"] = searchString;
+                
                 return View(things);
             }
             catch (InvalidOperationException InvalidOpEx)
