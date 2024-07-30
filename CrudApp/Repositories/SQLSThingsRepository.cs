@@ -47,6 +47,18 @@ namespace CrudApp.Repositories
             }
 
         }
+
+        public async Task<IEnumerable<Thing>> SearchAsync(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return await GetAllAsync();
+            }
+
+            return await _context.Thing
+                .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()))
+                .ToListAsync();
+        }
         public async Task AddAsync(Thing thing)
         {
             if (thing == null)

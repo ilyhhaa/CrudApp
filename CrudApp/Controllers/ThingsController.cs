@@ -72,7 +72,7 @@ namespace CrudApp.Controllers
         {
             return View();
         }
- 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description")] Thing thing)
@@ -108,7 +108,7 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return NotFound();
             }
@@ -120,7 +120,7 @@ namespace CrudApp.Controllers
             }
             return View(thing);
         }
-            
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Description")] Thing thing)
@@ -139,17 +139,17 @@ namespace CrudApp.Controllers
                 }
                 catch (ArgumentNullException ArgNullEx)
                 {
-                    
+
                     ModelState.AddModelError(string.Empty, "The thing cannot be null.");
                 }
                 catch (InvalidOperationException InvalidOpEx)
                 {
-                    
+
                     ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
                 }
                 catch (Exception ex)
                 {
-                    
+
                     ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 }
             }
@@ -187,7 +187,7 @@ namespace CrudApp.Controllers
             try
             {
                 await _thingsRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(Index)); 
+                return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException InvalidOpEx)
             {

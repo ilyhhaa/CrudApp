@@ -5,6 +5,7 @@ namespace CrudApp.Contracts
 {
     public interface IThingsRepository
     {
+        Task<IEnumerable<Thing>> SearchAsync(string searchString);
         Task<IEnumerable<Thing>> GetAllAsync();
         Task<Thing> GetByIdAsync(Guid id);
         Task AddAsync(Thing thing);
