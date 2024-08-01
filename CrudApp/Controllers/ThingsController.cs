@@ -37,7 +37,7 @@ namespace CrudApp.Controllers
             {
                 return Problem(detail: InvalidOpEx.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Problem(detail: "An unexpected error occurred. Please try again later.");
             }
@@ -67,7 +67,7 @@ namespace CrudApp.Controllers
             {
                 return Problem(detail: InvalidOpEx.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Problem(detail: "An unexpected error occurred. Please try again later.");
             }
@@ -91,7 +91,7 @@ namespace CrudApp.Controllers
                     await _thingsRepository.AddAsync(thing);
                     return RedirectToAction(nameof(Index));
                 }
-                catch (ArgumentNullException ArgNullEx)
+                catch (ArgumentNullException)
                 {
                     ModelState.AddModelError(string.Empty, "The thing cannot be null.");
                 }
@@ -103,7 +103,7 @@ namespace CrudApp.Controllers
                 {
                     ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 }
@@ -142,7 +142,7 @@ namespace CrudApp.Controllers
                     await _thingsRepository.UpdateAsync(thing);
                     return RedirectToAction(nameof(Index));
                 }
-                catch (ArgumentNullException ArgNullEx)
+                catch (ArgumentNullException)
                 {
 
                     ModelState.AddModelError(string.Empty, "The thing cannot be null.");
@@ -152,7 +152,7 @@ namespace CrudApp.Controllers
 
                     ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                     ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
@@ -178,7 +178,7 @@ namespace CrudApp.Controllers
 
                 return View(thing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 return View("Error");
@@ -199,7 +199,7 @@ namespace CrudApp.Controllers
                 ModelState.AddModelError(string.Empty, InvalidOpEx.Message);
                 return View("Error");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "An unexpected error occurred. Please try again later.");
                 return View("Error");

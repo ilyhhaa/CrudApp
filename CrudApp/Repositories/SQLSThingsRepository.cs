@@ -83,11 +83,11 @@ namespace CrudApp.Repositories
                 await _context.Thing.AddAsync(thing);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException DbUpdConcurrencyEx)
+            catch (DbUpdateConcurrencyException)
             {
                 throw new InvalidOperationException("Concurrency conflict occurred while saving the thing.");
             }
-            catch (DbUpdateException DbUpdateEx)
+            catch (DbUpdateException)
             {
                 throw new InvalidOperationException("An error occurred while saving the thing.");
             }
