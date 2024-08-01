@@ -56,7 +56,7 @@ namespace CrudApp.Repositories
             }
 
             return await _context.Thing
-                .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()))
+                .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()) || t.Description.ToUpper().Contains(searchString.ToUpper())) 
                 .ToListAsync();
         }
 
