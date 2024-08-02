@@ -3,6 +3,7 @@ using CrudApp.Data;
 using CrudApp.Models.SeedData;
 using CrudApp.Repositories;
 using CrudApp.Contracts;
+using CrudApp.Settings;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CrudAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CrudAppContext") ?? throw new InvalidOperationException("Connection string 'CrudAppContext' not found.")));
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<CrudAppContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IThingsRepository,SQLSThingsRepository>();
+builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB");
+builder.Services.AddSingleton<MongoThingsContext>();
 
 var app = builder.Build();
 
