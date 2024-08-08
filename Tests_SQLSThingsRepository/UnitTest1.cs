@@ -1,3 +1,4 @@
+using CrudApp.Contracts;
 using CrudApp.Data;
 using CrudApp.Models;
 using CrudApp.Repositories;
@@ -32,10 +33,14 @@ namespace Tests_SQLSThingsRepository
         [Fact]
         public async Task GetAllAsync_ReturnsAllThings()
         {
-        
-            var result = await _repository.GetAllAsync();
 
-          
+            await using var context = new CrudAppContext(_options);
+            var repository = new SQLSThingsRepository(context);
+
+            
+            var result = await repository.GetAllAsync();
+
+            
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
         }
@@ -43,16 +48,7 @@ namespace Tests_SQLSThingsRepository
         [Fact]
         public async Task GetAllAsync_ContextIsNull_ThrowsArgumentNullException()
         {
-          
-            var options = new DbContextOptionsBuilder<CrudAppContext>()
-                .UseInMemoryDatabase(databaseName: "NullContextTestDb")
-                .Options;
-
-            await using var context = new CrudAppContext(options);
-            var repository = new SQLSThingsRepository(null);
-
-          
-            await Assert.ThrowsAsync<ArgumentNullException>(() => repository.GetAllAsync());
+            Assert.Throws<ArgumentNullException>(() => new SQLSThingsRepository(null));
         }
     }
 }
