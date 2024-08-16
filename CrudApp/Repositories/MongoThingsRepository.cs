@@ -29,7 +29,7 @@ namespace CrudApp.Repositories
             await _context.MongoThings.InsertOneAsync(thing);
         }
 
-        public async void UpdateAsync(Guid id,MongoThings thing)
+        public async Task UpdateAsync(Guid id,MongoThings thing)
         {
             var filter = Builders<MongoThings>.Filter.Eq(m => m.Id, id);
 
@@ -41,7 +41,10 @@ namespace CrudApp.Repositories
 
         }
 
-
+        public async Task DeleteAsync(Guid id)
+        {
+            await _context.MongoThings.DeleteOneAsync(Builders<MongoThings>.Filter.Eq(m => m.Id, id));
+        }
 
     }
 }
