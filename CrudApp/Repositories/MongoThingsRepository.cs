@@ -1,16 +1,17 @@
-﻿using CrudApp.Data;
+﻿using CrudApp.Contracts;
+using CrudApp.Data;
 using CrudApp.Models;
 using MongoDB.Driver;
 
 namespace CrudApp.Repositories
 {
-    public class MongoThingsRepository
+    public class MongoThingsRepository : IMongoThingsRepository
     {
         private readonly MongoThingsContext _context;
 
         public MongoThingsRepository(MongoThingsContext context)
         {
-           _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<MongoThings>> GetAllAsync()
@@ -29,7 +30,7 @@ namespace CrudApp.Repositories
             await _context.MongoThings.InsertOneAsync(thing);
         }
 
-        public async Task UpdateAsync(Guid id,MongoThings thing)
+        public async Task UpdateAsync(Guid id, MongoThings thing)
         {
             var filter = Builders<MongoThings>.Filter.Eq(m => m.Id, id);
 

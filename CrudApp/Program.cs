@@ -13,6 +13,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IThingsRepository,SQLSThingsRepository>();
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoThingsContext>();
+builder.Services.AddScoped<IMongoThingsRepository, MongoThingsRepository>();
 
 var app = builder.Build();
 
