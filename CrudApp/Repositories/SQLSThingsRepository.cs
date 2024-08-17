@@ -106,9 +106,13 @@ namespace CrudApp.Repositories
                 throw new InvalidOperationException($"Thing with ID {thing.Id} does not exist.");
             }
 
+            _context.Entry(existingThing).State = EntityState.Detached;
+
+            _context.Entry(thing).State = EntityState.Modified;
+
             try
             {
-                _context.Thing.Update(thing);
+                
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException DbUpdConcurrencyEx)
