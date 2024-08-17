@@ -38,7 +38,6 @@ namespace CrudApp.Repositories
             }
             catch (DbUpdateException DbUpdateEx)
             {
-
                 throw new Exception("An error occurred while accessing the database", DbUpdateEx);
             }
             catch (InvalidOperationException InvalidOpEx)
@@ -56,7 +55,7 @@ namespace CrudApp.Repositories
             }
 
             return await _context.Thing
-                .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()) || t.Description.ToUpper().Contains(searchString.ToUpper())) 
+                .Where(t => t.Title.ToUpper().Contains(searchString.ToUpper()) || t.Description.ToUpper().Contains(searchString.ToUpper()))
                 .ToListAsync();
         }
 
@@ -112,7 +111,7 @@ namespace CrudApp.Repositories
 
             try
             {
-                
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException DbUpdConcurrencyEx)
