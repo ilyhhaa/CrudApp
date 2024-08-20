@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CrudApp.Models;
 using CrudApp.Contracts;
+using CrudApp.ViewModels;
 
 namespace CrudApp.Controllers
 {
     public class ThingsController : Controller
     {
         private readonly IThingsRepository _thingsRepository;
+        private readonly IMongoThingsRepository _mongoThingsRepository;
 
-        public ThingsController(IThingsRepository thingsRepository)
+        public ThingsController(IThingsRepository thingsRepository,IMongoThingsRepository mongoThingsRepository)
         {
             _thingsRepository = thingsRepository;
         }
@@ -27,10 +29,20 @@ namespace CrudApp.Controllers
             {
                 var things = string.IsNullOrEmpty(searchString) ? await _thingsRepository.GetAllAsync()
                     : await _thingsRepository.SearchAsync(searchString);
-                
+
                 ViewData["CurrentSearch"] = searchString;
-                
-                return View(things);
+
+                var mongoThings = await _mongoThingsRepository.GetAllAsync();
+
+                var viewModel = new IndexViewModel
+                {
+                    Things = things,
+                    MongoThings = mongoThings,
+                    CurrentSearch = searchString
+
+                };
+
+                return View(viewModel);
             }
             catch (InvalidOperationException InvalidOpEx)
             {
