@@ -12,7 +12,8 @@ namespace CrudApp.Controllers
 
         public ThingsController(IThingsRepository thingsRepository,IMongoThingsRepository mongoThingsRepository)
         {
-            _thingsRepository = thingsRepository;
+            _thingsRepository = thingsRepository ?? throw new ArgumentNullException(nameof(thingsRepository));
+            _mongoThingsRepository = mongoThingsRepository ?? throw new ArgumentNullException(nameof(mongoThingsRepository));
         }
         public IActionResult About()
         {
