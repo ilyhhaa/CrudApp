@@ -19,7 +19,7 @@ namespace CrudApp.Controllers
             return View(mongoThings);
 
         }
-
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             var thing = await _mongoThingsRepository.GetByIdAsync(id);
@@ -43,14 +43,15 @@ namespace CrudApp.Controllers
             return View(thing);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             var thing = await _mongoThingsRepository.GetByIdAsync(id);
             return View(thing);
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Description")] MongoThings thing)
         {
             if (id != thing.Id)
@@ -66,6 +67,7 @@ namespace CrudApp.Controllers
             return View(thing);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
             var thing = await _mongoThingsRepository.GetByIdAsync(id);

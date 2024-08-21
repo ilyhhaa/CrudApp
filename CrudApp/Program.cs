@@ -12,6 +12,7 @@ builder.Services.AddDbContext<CrudAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CrudAppContext") ?? throw new InvalidOperationException("Connection string 'CrudAppContext' not found.")));
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoThingsContext>();
+builder.Services.AddScoped<SeedData>();
 builder.Services.AddScoped<IThingsRepository, SQLSThingsRepository>();
 builder.Services.AddScoped<IMongoThingsRepository, MongoThingsRepository>();
 
@@ -25,6 +26,9 @@ using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
     seedDataThing.Initialize(service);
+
+    var MongoSeed = scope.ServiceProvider.GetRequiredService<SeedData>();
+    await MongoSeed.Initialize();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
