@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CrudApp.Models;
 using CrudApp.Contracts;
-using CrudApp.ViewModels;
 
 namespace CrudApp.Controllers
 {
     public class ThingsController : Controller
     {
         private readonly IThingsRepository _thingsRepository;
-        private readonly IMongoThingsRepository _mongoThingsRepository;
+       
 
-        public ThingsController(IThingsRepository thingsRepository,IMongoThingsRepository mongoThingsRepository)
+        public ThingsController(IThingsRepository thingsRepository)
         {
             _thingsRepository = thingsRepository ?? throw new ArgumentNullException(nameof(thingsRepository));
-            _mongoThingsRepository = mongoThingsRepository ?? throw new ArgumentNullException(nameof(mongoThingsRepository));
+       
         }
         public IActionResult About()
         {

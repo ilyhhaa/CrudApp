@@ -1,12 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CrudApp.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CrudApp.Controllers
 {
     public class MongoThingsController : Controller
     {
-        public IActionResult Index()
+        private readonly IMongoThingsRepository _mongoThingsRepository;
+        public MongoThingsController(IMongoThingsRepository mongoThingsRepository)
         {
-            return View();
+            _mongoThingsRepository = mongoThingsRepository ?? throw new ArgumentNullException(nameof(mongoThingsRepository));
         }
+
+        public async Task<IActionResult> Index()
+        {
+            
+                var mongoThings = await _mongoThingsRepository.GetAllAsync();
+                return View(mongoThings);
+            
+        }
+
+        public async Task<IActionResult> Details(Guid id)
+        {
+                var thing = await _mongoThingsRepository.GetByIdAsync(id);
+                return View(thing);
+        }
+
+
     }
 }
