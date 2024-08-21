@@ -26,35 +26,24 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Index(string searchString)
         {
-            try
-            {
-                var things = string.IsNullOrEmpty(searchString) ? await _thingsRepository.GetAllAsync()
-                    : await _thingsRepository.SearchAsync(searchString);
-
-                ViewData["CurrentSearch"] = searchString;
-
-                var mongoThings = await _mongoThingsRepository.GetAllAsync();
-
-                var viewModel = new IndexViewModel
-                {
-                    Things = things,
-                    MongoThings = mongoThings,
-                    CurrentSearch = searchString
-
-                };
-
-                return View(viewModel);
-            }
-            catch (InvalidOperationException InvalidOpEx)
-            {
-                return Problem(detail: InvalidOpEx.Message);
-            }
-            catch (Exception)
-            {
-                return Problem(detail: "An unexpected error occurred. Please try again later.");
-            }
            
-        }
+                try
+                {
+                    var things = string.IsNullOrEmpty(searchString)
+                        ? await _thingsRepository.GetAllAsync()
+                        : await _thingsRepository.SearchAsync(searchString);
+
+                    return View(things);
+                }
+                catch (InvalidOperationException InvalidOpEx)
+                {
+                    return Problem(detail: InvalidOpEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    return Problem(detail: "An unexpected error occurred. Please try again later.");
+                }
+            }
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)

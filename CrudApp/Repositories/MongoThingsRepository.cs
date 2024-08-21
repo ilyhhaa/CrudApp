@@ -129,4 +129,3 @@ namespace CrudApp.Repositories
     }
 }
 
-//Extend the controller to output two tables from Mongo and SQLS databases
