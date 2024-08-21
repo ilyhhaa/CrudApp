@@ -1,4 +1,5 @@
 ﻿using CrudApp.Contracts;
+using CrudApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrudApp.Controllers
@@ -13,18 +14,70 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-                var mongoThings = await _mongoThingsRepository.GetAllAsync();
-                return View(mongoThings);
-            
+
+            var mongoThings = await _mongoThingsRepository.GetAllAsync();
+            return View(mongoThings);
+
         }
 
         public async Task<IActionResult> Details(Guid id)
         {
-                var thing = await _mongoThingsRepository.GetByIdAsync(id);
-                return View(thing);
+            var thing = await _mongoThingsRepository.GetByIdAsync(id);
+            return View(thing);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Title,Description")] MongoThings thing)
+        {
+            if (ModelState.IsValid)
+            {
+                await _mongoThingsRepository.CreateAsync(thing);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(thing);
         }
 
 
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var thing = await _mongoThingsRepository.GetByIdAsync(id);
+            return View(thing);
+        }
+
+
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Description")] MongoThings thing)
+        {
+            if (id != thing.Id)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _mongoThingsRepository.UpdateAsync(id, thing);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(thing);
+        }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var thing = await _mongoThingsRepository.GetByIdAsync(id);
+            return View(thing);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+                await _mongoThingsRepository.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+        }
     }
 }
