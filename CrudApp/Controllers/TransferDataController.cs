@@ -9,12 +9,12 @@ namespace CrudApp.Controllers
         private readonly IThingsRepository _thingsRepository;
         private readonly IMongoThingsRepository _mongoThingsRepository;
 
-        public TransferDataController(IThingsRepository thingsRepository,IMongoThingsRepository mongoThingsRepository)
+        public TransferDataController(IThingsRepository thingsRepository, IMongoThingsRepository mongoThingsRepository)
         {
-                _thingsRepository = thingsRepository;
-              _mongoThingsRepository = mongoThingsRepository;
+            _thingsRepository = thingsRepository;
+            _mongoThingsRepository = mongoThingsRepository;
         }
-        
+
         public async Task<IActionResult> TransferMongoToSQLS(Guid id)
         {
             var mongoThing = await _mongoThingsRepository.GetByIdAsync(id);
@@ -38,17 +38,17 @@ namespace CrudApp.Controllers
             await _mongoThingsRepository.DeleteAsync(mongoThing.Id);
 
 
-            return RedirectToAction("Index","MongoThings");
+            return RedirectToAction("Index", "MongoThings");
 
         }
 
 
-       
+
         public async Task<IActionResult> TransferSqlsToMongo(Guid id)
         {
             var sqlsThing = await _thingsRepository.GetByIdAsync(id);
 
-            if(sqlsThing == null)
+            if (sqlsThing == null)
             {
                 return NotFound();
             }
@@ -64,9 +64,9 @@ namespace CrudApp.Controllers
 
             await _thingsRepository.DeleteAsync(id);
 
-            return RedirectToAction("Index","Things");
+            return RedirectToAction("Index", "Things");
 
         }
-        
+
     }
 }

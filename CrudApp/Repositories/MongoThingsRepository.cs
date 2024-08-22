@@ -134,7 +134,7 @@ namespace CrudApp.Repositories
             }
 
             return await _context.MongoThings
-                .Find(m=>m.Title.ToUpper().Contains(searchString.ToUpper())||m.Description.ToUpper().Contains(searchString.ToUpper())).ToListAsync();
+                .Find(m => m.Title.ToUpper().Contains(searchString.ToUpper()) || m.Description.ToUpper().Contains(searchString.ToUpper())).ToListAsync();
         }
     }
 }

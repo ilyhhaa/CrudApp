@@ -7,12 +7,12 @@ namespace CrudApp.Controllers
     public class ThingsController : Controller
     {
         private readonly IThingsRepository _thingsRepository;
-       
+
 
         public ThingsController(IThingsRepository thingsRepository)
         {
             _thingsRepository = thingsRepository ?? throw new ArgumentNullException(nameof(thingsRepository));
-       
+
         }
         public IActionResult About()
         {
@@ -25,24 +25,24 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> Index(string searchString)
         {
-           
-                try
-                {
-                    var things = string.IsNullOrEmpty(searchString)
-                        ? await _thingsRepository.GetAllAsync()
-                        : await _thingsRepository.SearchAsync(searchString);
 
-                    return View(things);
-                }
-                catch (InvalidOperationException InvalidOpEx)
-                {
-                    return Problem(detail: InvalidOpEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    return Problem(detail: "An unexpected error occurred. Please try again later.");
-                }
+            try
+            {
+                var things = string.IsNullOrEmpty(searchString)
+                    ? await _thingsRepository.GetAllAsync()
+                    : await _thingsRepository.SearchAsync(searchString);
+
+                return View(things);
             }
+            catch (InvalidOperationException InvalidOpEx)
+            {
+                return Problem(detail: InvalidOpEx.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "An unexpected error occurred. Please try again later.");
+            }
+        }
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)

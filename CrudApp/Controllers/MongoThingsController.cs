@@ -18,7 +18,7 @@ namespace CrudApp.Controllers
                 ? await _mongoThingsRepository.GetAllAsync()
                 : await _mongoThingsRepository.SearchAsync(searchstring);
 
-            
+
             return View(mongoThings);
 
         }
@@ -81,8 +81,8 @@ namespace CrudApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-                await _mongoThingsRepository.DeleteAsync(id);
-                return RedirectToAction(nameof(Index));
+            await _mongoThingsRepository.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
