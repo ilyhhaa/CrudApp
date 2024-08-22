@@ -9,5 +9,7 @@ namespace CrudApp.Contracts
         Task CreateAsync(MongoThings thing);
         Task UpdateAsync(Guid id, MongoThings thing);
         Task DeleteAsync(Guid id);
+
+        Task<IEnumerable<MongoThings>> SearchAsync(string searchString);
     }
 }

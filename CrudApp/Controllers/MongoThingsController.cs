@@ -12,10 +12,13 @@ namespace CrudApp.Controllers
             _mongoThingsRepository = mongoThingsRepository ?? throw new ArgumentNullException(nameof(mongoThingsRepository));
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchstring)
         {
+            var mongoThings = string.IsNullOrEmpty(searchstring)
+                ? await _mongoThingsRepository.GetAllAsync()
+                : await _mongoThingsRepository.SearchAsync(searchstring);
 
-            var mongoThings = await _mongoThingsRepository.GetAllAsync();
+            
             return View(mongoThings);
 
         }

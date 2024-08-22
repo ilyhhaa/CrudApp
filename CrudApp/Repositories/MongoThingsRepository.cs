@@ -126,6 +126,16 @@ namespace CrudApp.Repositories
             }
         }
 
+        public async Task<IEnumerable<MongoThings>> SearchAsync(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return await GetAllAsync();
+            }
+
+            return await _context.MongoThings
+                .Find(m=>m.Title.ToUpper().Contains(searchString.ToUpper())||m.Description.ToUpper().Contains(searchString.ToUpper())).ToListAsync();
+        }
     }
 }
 
