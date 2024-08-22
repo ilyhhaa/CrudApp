@@ -9,7 +9,7 @@ namespace CrudApp.Data
 {
     public class CrudAppContext : DbContext
     {
-        public CrudAppContext (DbContextOptions<CrudAppContext> options)
+        public CrudAppContext(DbContextOptions<CrudAppContext> options)
             : base(options)
         {
         }

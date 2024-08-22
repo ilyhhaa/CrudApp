@@ -8,7 +8,7 @@ namespace CrudApp.Data
     public class MongoThingsContext
     {
         private readonly IMongoDatabase _database;
-         
+
         public MongoThingsContext(IOptions<MongoDBSettings> settings)
         {
             var client = new MongoClient(settings.Value.ConnectionString);
