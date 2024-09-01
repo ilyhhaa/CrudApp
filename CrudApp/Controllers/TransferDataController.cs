@@ -46,25 +46,31 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> TransferSqlsToMongo(Guid id)
         {
-            var sqlsThing = await _thingsRepository.GetByIdAsync(id);
-
-            if (sqlsThing == null)
+            try
             {
-                return NotFound();
+                var sqlsThing = await _thingsRepository.GetByIdAsync(id);
+
+                if (sqlsThing == null)
+                {
+                    return NotFound();
+                }
+
+                var mongoThing = new MongoThings
+                {
+                    Title = sqlsThing.Title,
+                    Description = sqlsThing.Description,
+                    Id = id 
+                };
+
+                await _mongoThingsRepository.CreateAsync(mongoThing);
+                await _thingsRepository.DeleteAsync(id);
+
+                return RedirectToAction("Index", "Things");
             }
-
-            var mongoThing = new MongoThings
+            catch (InvalidOperationException ex)
             {
-                Title = sqlsThing.Title,
-                Description = sqlsThing.Description,
-                Id = Guid.NewGuid()
-            };
-
-            await _mongoThingsRepository.CreateAsync(mongoThing);
-
-            await _thingsRepository.DeleteAsync(id);
-
-            return RedirectToAction("Index", "Things");
+                return BadRequest($"Error transferring data: {ex.Message}");
+            }
 
         }
 

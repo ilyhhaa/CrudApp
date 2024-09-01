@@ -44,8 +44,8 @@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
                         <i class="bi bi-trash"></i> Delete
                     </a>
-                    <a asp-action="TransferMongoToSQLS" asp-controller="TransferData" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
-                        <i class="bi bi-arrow-right-circle"></i> Transfer to SQLS
+                    <a asp-action="TransferSqlsToMongo" asp-controller="TransferData" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                        <i class="bi bi-arrow-right-circle"></i> Transfer to Mongo
                     </a>
                 </td>
             </tr>

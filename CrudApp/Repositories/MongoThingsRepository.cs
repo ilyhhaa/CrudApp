@@ -36,13 +36,7 @@ namespace CrudApp.Repositories
             try
             {
                 var thing = await _context.MongoThings.Find(Builders<MongoThings>.Filter.Eq(m => m.Id, id)).FirstOrDefaultAsync();
-
-                if (thing == null)
-                {
-                    throw new InvalidOperationException($"No item found with ID {id}.");
-                }
-
-                return thing;
+                return thing; 
             }
             catch (MongoException mongoEx)
             {
