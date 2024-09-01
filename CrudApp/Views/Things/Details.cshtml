@@ -4,29 +4,32 @@
     ViewData["Title"] = "Details";
 }
 
-<h1 class="text-center my-4">Thing Details</h1>
+<h1 class="text-center my-4">
+    <i class="fas fa-database" style="font-size: 40px; vertical-align: middle; margin-right: 10px;"></i>
+    SQLS Things Details
+</h1>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h4 class="card-title">Thing</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-3 font-weight-bold">
-                @Html.DisplayNameFor(model => model.Title)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-            <dt class="col-sm-3 font-weight-bold">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-        </dl>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 fw-bold">Title:</dt>
+                        <dd class="col-sm-8">@Model.Title</dd>
+
+                        <dt class="col-sm-4 fw-bold">Description:</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-lg shadow-sm">
+                    <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg shadow-sm">
+                    <i class="bi bi-arrow-left-circle"></i> Back to List
+                </a>
+            </div>
+        </div>
     </div>
-</div>
-<div class="text-center mt-4">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
