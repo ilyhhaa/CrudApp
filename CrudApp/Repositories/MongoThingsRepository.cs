@@ -36,7 +36,7 @@ namespace CrudApp.Repositories
             try
             {
                 var thing = await _context.MongoThings.Find(Builders<MongoThings>.Filter.Eq(m => m.Id, id)).FirstOrDefaultAsync();
-                return thing; 
+                return thing;
             }
             catch (MongoException mongoEx)
             {

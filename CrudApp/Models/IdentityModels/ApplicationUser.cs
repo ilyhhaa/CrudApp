@@ -2,7 +2,7 @@
 
 namespace CrudApp.Models.IdentityModels
 {
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }
