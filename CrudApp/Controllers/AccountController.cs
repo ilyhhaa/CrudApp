@@ -1,5 +1,6 @@
 ﻿using CrudApp.Models.IdentityModels;
 using CrudApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -18,17 +19,19 @@ namespace CrudApp.Controllers
             _signInManager = signInManager;
         }
 
-
+       
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -36,14 +39,16 @@ namespace CrudApp.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Things");
+
+                    TempData["SuccessMessage"] = "Registration successful! Please log in.";
+
+                    return RedirectToAction("Login", "Account");
                 }
 
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-
             }
             return View(model);
         }
