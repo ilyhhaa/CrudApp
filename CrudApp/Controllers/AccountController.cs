@@ -10,7 +10,7 @@ namespace CrudApp.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager <ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
@@ -18,8 +18,8 @@ namespace CrudApp.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpGet]
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -36,10 +36,10 @@ namespace CrudApp.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index","Things");
+                    return RedirectToAction("Index", "Things");
                 }
 
-                foreach(var error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -55,8 +55,7 @@ namespace CrudApp.Controllers
         }
 
         [HttpPost]
-
-        public async Task<IActionResult> Login (LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +73,6 @@ namespace CrudApp.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
