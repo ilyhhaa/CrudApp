@@ -1,9 +1,11 @@
 ﻿using CrudApp.Contracts;
 using CrudApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrudApp.Controllers
 {
+    [Authorize]
     public class MongoThingsController : Controller
     {
         private readonly IMongoThingsRepository _mongoThingsRepository;

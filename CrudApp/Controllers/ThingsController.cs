@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CrudApp.Models;
 using CrudApp.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CrudApp.Controllers
 {
+    [Authorize]
     public class ThingsController : Controller
     {
         private readonly IThingsRepository _thingsRepository;
@@ -14,15 +16,7 @@ namespace CrudApp.Controllers
             _thingsRepository = thingsRepository ?? throw new ArgumentNullException(nameof(thingsRepository));
 
         }
-        public IActionResult About()
-        {
-            return View();
-        }
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
+       
         public async Task<IActionResult> Index(string searchString)
         {
 

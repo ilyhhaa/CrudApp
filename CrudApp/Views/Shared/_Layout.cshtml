@@ -40,39 +40,51 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+                        
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Things" asp-action="Index">
+                                    <i class="fas fa-database"></i> SQLS Table
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Things" asp-action="Index">
-                                <i class="fas fa-database"></i> SQLS Table
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="MongoThings" asp-action="Index">
-                                <i class="fas fa-leaf"></i> Mongo Table
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Things" asp-action="About">
-                                <i class="fas fa-info-circle"></i> About
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Things" asp-action="Contact">
-                                <i class="fas fa-envelope"></i> Contact
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="MongoThings" asp-action="Index">
+                                    <i class="fas fa-leaf"></i> Mongo Table
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">
-                                <i class="fa-regular fa-user"></i>Register
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">
+                                    <i class="fas fa-info-circle"></i> About
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">
-                                <i class="fa-solid fa-user"></i>Log In
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">
+                                    <i class="fas fa-envelope"></i> Contact
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">
+                                    <i class="fa-regular fa-user"></i>Register
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">
+                                    <i class="fa-solid fa-user"></i>Log In
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 ﻿using CrudApp.Contracts;
 using CrudApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrudApp.Controllers
 {
+    [Authorize]
     public class TransferDataController : Controller
     {
         private readonly IThingsRepository _thingsRepository;
