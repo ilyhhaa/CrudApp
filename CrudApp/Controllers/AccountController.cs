@@ -54,12 +54,14 @@ namespace CrudApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -81,10 +83,8 @@ namespace CrudApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Things");
+
+            return RedirectToAction("Login", "Account");
         }
-
-
-
     }
 }
