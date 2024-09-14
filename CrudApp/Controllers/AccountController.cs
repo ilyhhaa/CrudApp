@@ -87,7 +87,7 @@ namespace CrudApp.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword()
@@ -125,6 +125,63 @@ namespace CrudApp.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token = null)
+        {
+            if (token == null)
+            {
+                return BadRequest("A token must be supplied for password reset.");
+            }
+
+            var model = new ResetPasswordViewModel { Token = token };
+
+            return View(model);
+
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
         {
             return View();
         }
