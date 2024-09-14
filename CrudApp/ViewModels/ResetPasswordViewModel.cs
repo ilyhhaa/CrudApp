@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CrudApp.Models.IdentityModels
+namespace CrudApp.ViewModels
 {
     public class ResetPasswordViewModel
     {
