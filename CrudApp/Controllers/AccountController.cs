@@ -100,26 +100,23 @@ namespace CrudApp.Controllers
 
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, protocol: HttpContext.Request.Scheme);
+
+                ViewBag.ResetLink = callbackUrl;
+
+                return View("ForgotPasswordConfirmation");
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-            {
-                return RedirectToAction("ForgotPasswordConfirmation");
-            }
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            var callbackUrl = Url.Action("ResetPassword", "Account", new { token, email = model.Email }, protocol: HttpContext.Request.Scheme);
-
-            //here we need  email sender i will find solution for this one/
-
-            return RedirectToAction("ForgotPasswordConfirmation");
-
+            return View(model);
         }
 
         [HttpGet]
@@ -129,7 +126,6 @@ namespace CrudApp.Controllers
             return View();
         }
 
-        //
 
         [HttpGet]
         [AllowAnonymous]
@@ -141,15 +137,11 @@ namespace CrudApp.Controllers
             }
 
             var model = new ResetPasswordViewModel { Token = token };
-
             return View(model);
-
-
         }
 
         [HttpPost]
         [AllowAnonymous]
-
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -158,14 +150,12 @@ namespace CrudApp.Controllers
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
-
             if (user == null)
             {
                 return RedirectToAction("ResetPasswordConfirmation");
             }
 
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation");
@@ -175,9 +165,7 @@ namespace CrudApp.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-
             return View(model);
-
         }
 
         [HttpGet]
