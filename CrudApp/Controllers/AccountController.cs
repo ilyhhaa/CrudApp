@@ -172,7 +172,7 @@ namespace CrudApp.Controllers
         [AllowAnonymous]
         public IActionResult ResetPasswordConfirmation()
         {
-            return View();
+            return RedirectToAction("Login");
         }
     }
 }
